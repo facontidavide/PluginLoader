@@ -277,20 +277,6 @@ public:
 		return classFor(className).create();
 	}
 
-	void destroy(const std::string& className, Base* pObject) const
-		/// Destroys the object pObject points to.
-		/// Does nothing if object is not found.
-	{
-		classFor(className).destroy(pObject);
-	}
-
-	bool isAutoDelete(const std::string& className, Base* pObject) const
-		/// Returns true if the object is automatically
-		/// deleted by its meta object.
-	{
-		return classFor(className).isAutoDelete(pObject);
-	}
-	
 	const Manif* findManifest(const std::string& path) const
 		/// Returns a pointer to the Manifest for the given
 		/// library, or a null pointer if the library has not been loaded.
