@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef plugin_loader__EXCEPTIONS_HPP_
-#define plugin_loader__EXCEPTIONS_HPP_
+#ifndef PLUGIN_LOADER_EXCEPTIONS_HPP_
+#define PLUGIN_LOADER_EXCEPTIONS_HPP_
 
 #include <stdexcept>
 #include <string>
@@ -99,4 +99,4 @@ public:
 };
 
 }  // namespace plugin_loader
-#endif  // plugin_loader__EXCEPTIONS_HPP_
+#endif  // PLUGIN_LOADER_EXCEPTIONS_HPP_

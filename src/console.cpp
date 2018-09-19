@@ -58,7 +58,7 @@ struct DefaultOutputHandler
     OutputHandler   *output_handler_;
     OutputHandler   *previous_output_handler_;
     LogLevel         logLevel_;
-    std::mutex                       lock_; // it is likely the outputhandler does some I/O, so we serialize it
+    std::mutex       lock_; // it is likely the outputhandler does some I/O, so we serialize it
 };
 
 // we use this function because we want to handle static initialization correctly

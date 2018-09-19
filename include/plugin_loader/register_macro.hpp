@@ -35,7 +35,7 @@
 #include "plugin_loader/plugin_loader_core.hpp"
 #include "plugin_loader/console.h"
 
-#define PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_WITH_MESSAGE(Derived, Base, UniqueID, Message) \
+#define PLUGIN_LOADER_REGISTER_CLASS_INTERNAL(Derived, Base, UniqueID) \
   namespace \
   { \
   struct ProxyExec ## UniqueID \
@@ -44,29 +44,17 @@
     typedef  Base _base; \
     ProxyExec ## UniqueID() \
     { \
-      if (!std::string(Message).empty()) { \
-        plugin_loader::logInform("%s", Message);} \
       plugin_loader::impl::registerPlugin<_derived, _base>(#Derived, #Base); \
     } \
   }; \
   static ProxyExec ## UniqueID g_register_plugin_ ## UniqueID; \
   }  // namespace
 
-#define PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_HOP1_WITH_MESSAGE(Derived, Base, UniqueID, Message) \
-  PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_WITH_MESSAGE(Derived, Base, UniqueID, Message)
+#define PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_HOP1(Derived, Base, UniqueID) \
+  PLUGIN_LOADER_REGISTER_CLASS_INTERNAL(Derived, Base, UniqueID)
 
-/**
-* @macro This macro is same as PLUGIN_LOADER_REGISTER_CLASS, but will spit out a message when the plugin is registered
-* at library load time
-*/
-#define PLUGIN_LOADER_REGISTER_CLASS_WITH_MESSAGE(Derived, Base, Message) \
-  PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_HOP1_WITH_MESSAGE(Derived, Base, __COUNTER__, Message)
-
-/**
-* @macro This is the macro which must be declared within the source (.cpp) file for each class that is to be exported as plugin.
-* The macro utilizes a trick where a new struct is generated along with a declaration of static global variable of same type after it. The struct's constructor invokes a registration function with the plugin system. When the plugin system loads a library with registered classes in it, the initialization of static variables forces the invocation of the struct constructors, and all exported classes are automatically registerd.
-*/
 #define PLUGIN_LOADER_REGISTER_CLASS(Derived, Base) \
-  PLUGIN_LOADER_REGISTER_CLASS_WITH_MESSAGE(Derived, Base, "")
+  PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_HOP1(Derived, Base, __COUNTER__)
 
-#endif  // plugin_loader__REGISTER_MACRO_HPP_
+
+#endif  // PLUGIN_LOADER_REGISTER_MACRO_HPP_

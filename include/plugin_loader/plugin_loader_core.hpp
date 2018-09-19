@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef plugin_loader__plugin_loader_CORE_HPP_
-#define plugin_loader__plugin_loader_CORE_HPP_
+#ifndef PLUGIN_LOADER_plugin_loader_CORE_HPP_
+#define PLUGIN_LOADER_plugin_loader_CORE_HPP_
 
 #include <mutex>
 #include <cstddef>
@@ -71,7 +71,7 @@ typedef std::vector<LibraryPair> LibraryVector;
 typedef std::vector<AbstractMetaObjectBase *> MetaObjectVector;
 
 // Debug
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 void printDebugInfoToScreen();
 
 // Global storage
@@ -80,28 +80,28 @@ void printDebugInfoToScreen();
  * @brief Gets a handle to a global data structure that holds a map of base class names (Base class describes plugin interface) to a FactoryMap which holds the factories for the various different concrete classes that can be instantiated. Note that the Base class is NOT THE LITERAL CLASSNAME, but rather the result of typeid(Base).name() which sometimes is the literal class name (as on Windows) but is often in mangled form (as on Linux).
  * @return A reference to the global base to factory map
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 BaseToFactoryMapMap & getGlobalPluginBaseToFactoryMapMap();
 
 /**
  * @brief Gets a handle to a list of open libraries in the form of LibraryPairs which encode the library path+name and the handle to the underlying Poco::SharedLibrary
  * @return A reference to the global vector that tracks loaded libraries
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 LibraryVector & getLoadedLibraryVector();
 
 /**
  * @brief When a library is being loaded, in order for factories to know which library they are being associated with, they use this function to query which library is being loaded.
  * @return The currently set loading library name as a string
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 std::string getCurrentlyLoadingLibraryName();
 
 /**
  * @brief When a library is being loaded, in order for factories to know which library they are being associated with, this function is called to set the name of the library currently being loaded.
  * @param library_name - The name of library that is being loaded currently
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 void setCurrentlyLoadingLibraryName(const std::string & library_name);
 
 /**
@@ -109,7 +109,7 @@ void setCurrentlyLoadingLibraryName(const std::string & library_name);
  * @return A pointer to the currently active PluginLoader.
  */
 
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 PluginLoader * getCurrentlyActivePluginLoader();
 
 
@@ -117,7 +117,7 @@ PluginLoader * getCurrentlyActivePluginLoader();
  * @brief Sets the PluginLoader currently in scope which used when a library is being loaded.
  * @param loader - pointer to the currently active PluginLoader.
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 void setCurrentlyActivePluginLoader(PluginLoader * loader);
 
 
@@ -125,7 +125,7 @@ void setCurrentlyActivePluginLoader(PluginLoader * loader);
  * @brief This function extracts a reference to the FactoryMap for appropriate base class out of the global plugin base to factory map. This function should be used by functions in this namespace that need to access the various factories so as to make sure the right key is generated to index into the global map.
  * @return A reference to the FactoryMap contained within the global Base-to-FactoryMap map.
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 FactoryMap & getFactoryMapForBaseClass(const std::string & typeid_base_class_name);
 
 /**
@@ -142,24 +142,24 @@ FactoryMap & getFactoryMapForBaseClass()
  * @brief To provide thread safety, all exposed plugin functions can only be run serially by multiple threads. This is implemented by using critical sections enforced by a single mutex which is locked and released with the following two functions
  * @return A reference to the global mutex
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 std::recursive_mutex & getLoadedLibraryVectorMutex();
 
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 std::recursive_mutex & getPluginBaseToFactoryMapMapMutex();
 
 /**
  * @brief Indicates if a library containing more than just plugins has been opened by the running process
  * @return True if a non-pure plugin library has been opened, otherwise false
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 bool hasANonPurePluginLibraryBeenOpened();
 
 /**
  * @brief Sets a flag indicating if a library containing more than just plugins has been opened by the running process
  * @param hasIt - The flag
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 void hasANonPurePluginLibraryBeenOpened(bool hasIt);
 
 // Plugin Functions
@@ -320,7 +320,7 @@ std::vector<std::string> getAvailableClasses(PluginLoader * loader)
  * @param loader - The PluginLoader whose scope we are within
  * @return A vector of strings where each string is the path+name of each library that are within a PluginLoader's visible scope
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 std::vector<std::string> getAllLibrariesUsedByPluginLoader(const PluginLoader * loader);
 
 /**
@@ -329,7 +329,7 @@ std::vector<std::string> getAllLibrariesUsedByPluginLoader(const PluginLoader * 
  * @param loader - The pointer to the PluginLoader whose scope we are within
  * @return true if the library is loaded within loader's scope, else false
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 bool isLibraryLoaded(const std::string & library_path, PluginLoader * loader);
 
 /**
@@ -337,7 +337,7 @@ bool isLibraryLoaded(const std::string & library_path, PluginLoader * loader);
  * @param library_path - The name of the library we wish to check is open
  * @return true if the library is loaded in memory, otherwise false
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 bool isLibraryLoadedByAnybody(const std::string & library_path);
 
 /**
@@ -345,7 +345,7 @@ bool isLibraryLoadedByAnybody(const std::string & library_path);
  * @param library_path - The name of the library to open
  * @param loader - The pointer to the PluginLoader whose scope we are within
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 void loadLibrary(const std::string & library_path, PluginLoader * loader);
 
 /**
@@ -353,59 +353,59 @@ void loadLibrary(const std::string & library_path, PluginLoader * loader);
  * @param library_path - The name of the library to open
  * @param loader - The pointer to the PluginLoader whose scope we are within
  */
-plugin_loader_PUBLIC
+PLUGIN_LOADER_PUBLIC
 void unloadLibrary(const std::string & library_path, PluginLoader * loader);
 
-plugin_loader_PUBLIC inline
+PLUGIN_LOADER_PUBLIC inline
 std::recursive_mutex & getLoadedLibraryVectorMutex()
 {
   static std::recursive_mutex m;
   return m;
 }
 
-plugin_loader_PUBLIC inline
+PLUGIN_LOADER_PUBLIC inline
 std::recursive_mutex & getPluginBaseToFactoryMapMapMutex()
 {
   static std::recursive_mutex m;
   return m;
 }
 
-plugin_loader_PUBLIC inline
+PLUGIN_LOADER_PUBLIC inline
 BaseToFactoryMapMap & getGlobalPluginBaseToFactoryMapMap()
 {
   static BaseToFactoryMapMap instance;
   return instance;
 }
 
-plugin_loader_PUBLIC inline
+PLUGIN_LOADER_PUBLIC inline
 MetaObjectVector & getMetaObjectGraveyard()
 {
   static MetaObjectVector instance;
   return instance;
 }
 
-plugin_loader_PUBLIC inline
+PLUGIN_LOADER_PUBLIC inline
 LibraryVector & getLoadedLibraryVector()
 {
   static LibraryVector instance;
   return instance;
 }
 
-plugin_loader_PUBLIC inline
+PLUGIN_LOADER_PUBLIC inline
 std::string & getCurrentlyLoadingLibraryNameReference()
 {
   static std::string library_name;
   return library_name;
 }
 
-plugin_loader_PUBLIC inline
+PLUGIN_LOADER_PUBLIC inline
 bool & hasANonPurePluginLibraryBeenOpenedReference()
 {
   static bool hasANonPurePluginLibraryBeenOpenedReference = false;
   return hasANonPurePluginLibraryBeenOpenedReference;
 }
 
-plugin_loader_PUBLIC inline
+PLUGIN_LOADER_PUBLIC inline
 PluginLoader * & getCurrentlyActivePluginLoaderReference()
 {
   static PluginLoader * loader = nullptr;
@@ -415,4 +415,4 @@ PluginLoader * & getCurrentlyActivePluginLoaderReference()
 }  // namespace impl
 }  // namespace plugin_loader
 
-#endif  // plugin_loader__plugin_loader_CORE_HPP_
+#endif  // PLUGIN_LOADER_plugin_loader_CORE_HPP_

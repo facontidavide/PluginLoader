@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef plugin_loader__MULTI_LIBRARY_plugin_loader_HPP_
-#define plugin_loader__MULTI_LIBRARY_plugin_loader_HPP_
+#ifndef PLUGIN_LOADER_MULTI_LIBRARY_plugin_loader_HPP_
+#define PLUGIN_LOADER_MULTI_LIBRARY_plugin_loader_HPP_
 
 #include <mutex>
 #include <cstddef>
@@ -52,7 +52,7 @@ typedef std::vector<PluginLoader *> PluginLoaderVector;
 * @class MultiLibraryPluginLoader
 * @brief A PluginLoader that can bind more than one runtime library
 */
-class plugin_loader_PUBLIC MultiLibraryPluginLoader
+class PLUGIN_LOADER_PUBLIC MultiLibraryPluginLoader
 {
 public:
   /**
@@ -359,4 +359,4 @@ private:
 
 
 }  // namespace plugin_loader
-#endif  // plugin_loader__MULTI_LIBRARY_plugin_loader_HPP_
+#endif  // PLUGIN_LOADER_MULTI_LIBRARY_plugin_loader_HPP_

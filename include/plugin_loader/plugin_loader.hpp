@@ -66,13 +66,13 @@ public:
    * @param library_path - The path of the runtime library to load
    * @param ondemand_load_unload - Indicates if on-demand (lazy) unloading/loading of libraries occurs as plugins are created/destroyed
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   explicit PluginLoader(const std::string & library_path, bool ondemand_load_unload = false);
 
   /**
    * @brief  Destructor for PluginLoader. All libraries opened by this PluginLoader are unloaded automatically.
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   virtual ~PluginLoader();
 
   /**
@@ -88,7 +88,7 @@ public:
   /**
    * @brief Gets the full-qualified path and name of the library associated with this class loader
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   std::string getLibraryPath() {return library_path_;}
 
   /**
@@ -179,34 +179,34 @@ public:
    * @param  library_path The path to the library to load
    * @return true if library is loaded within this PluginLoader object's scope, otherwise false
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   bool isLibraryLoaded();
 
   /**
    * @brief  Indicates if a library is loaded by some entity in the plugin system (another PluginLoader), but not necessarily loaded by this PluginLoader
    * @return true if library is loaded within the scope of the plugin system, otherwise false
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   bool isLibraryLoadedByAnyClassloader();
 
   /**
    * @brief Indicates if the library is to be loaded/unloaded on demand...meaning that only to load a lib when the first plugin is created and automatically shut it down when last active plugin is destroyed.
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   bool isOnDemandLoadUnloadEnabled() {return ondemand_load_unload_;}
 
   /**
    * @brief  Attempts to load a library on behalf of the PluginLoader. If the library is already opened, this method has no effect. If the library has been already opened by some other entity (i.e. another PluginLoader or global interface), this object is given permissions to access any plugin classes loaded by that other entity. This is
    * @param  library_path The path to the library to load
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   void loadLibrary();
 
   /**
    * @brief  Attempts to unload a library loaded within scope of the PluginLoader. If the library is not opened, this method has no effect. If the library is opened by other another PluginLoader, the library will NOT be unloaded internally -- however this PluginLoader will no longer be able to instantiate plugin_loader bound to that library. If there are plugin objects that exist in memory created by this classloader, a warning message will appear and the library will not be unloaded. If loadLibrary() was called multiple times (e.g. in the case of multiple threads or purposefully in a single thread), the user is responsible for calling unloadLibrary() the same number of times. The library will not be unloaded within the context of this classloader until the number of unload calls matches the number of loads.
    * @return The number of times more unloadLibrary() has to be called for it to be unbound from this PluginLoader
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   int unloadLibrary();
 
 private:
@@ -289,7 +289,7 @@ private:
   /**
   * @brief Getter for if an unmanaged (i.e. unsafe) instance has been created flag
   */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   static bool hasUnmanagedInstanceBeenCreated();
 
   /**
@@ -297,7 +297,7 @@ private:
    * @param lock_plugin_ref_count - Set to true if plugin_ref_count_mutex_ should be locked, else false
    * @return The number of times unloadLibraryInternal has to be called again for it to be unbound from this PluginLoader
    */
-  plugin_loader_PUBLIC
+  PLUGIN_LOADER_PUBLIC
   int unloadLibraryInternal(bool lock_plugin_ref_count);
 
 private:

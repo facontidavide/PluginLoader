@@ -32,8 +32,8 @@
 // Note: This header defines a simplication of Poco::MetaObject
 // that allows us to tag MetaObjects with an associated library name.
 
-#ifndef plugin_loader__META_OBJECT_HPP_
-#define plugin_loader__META_OBJECT_HPP_
+#ifndef PLUGIN_LOADER_META_OBJECT_HPP_
+#define PLUGIN_LOADER_META_OBJECT_HPP_
 
 #include <typeinfo>
 #include <string>
@@ -199,4 +199,4 @@ public:
 }  // namespace impl
 }  // namespace plugin_loader
 
-#endif  // plugin_loader__META_OBJECT_HPP_
+#endif  // PLUGIN_LOADER_META_OBJECT_HPP_

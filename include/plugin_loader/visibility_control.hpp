@@ -27,38 +27,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef plugin_loader__VISIBILITY_CONTROL_HPP_
-#define plugin_loader__VISIBILITY_CONTROL_HPP_
+#ifndef PLUGIN_LOADER_VISIBILITY_CONTROL_HPP_
+#define PLUGIN_LOADER_VISIBILITY_CONTROL_HPP_
 
 // This logic was borrowed (then namespaced) from the examples on the gcc wiki:
 //     https://gcc.gnu.org/wiki/Visibility
 
 #if defined _WIN32 || defined __CYGWIN__
   #ifdef __GNUC__
-    #define plugin_loader_EXPORT __attribute__ ((dllexport))
-    #define plugin_loader_IMPORT __attribute__ ((dllimport))
+    #define PLUGIN_LOADER_EXPORT __attribute__ ((dllexport))
+    #define PLUGIN_LOADER_IMPORT __attribute__ ((dllimport))
   #else
-    #define plugin_loader_EXPORT __declspec(dllexport)
-    #define plugin_loader_IMPORT __declspec(dllimport)
+    #define PLUGIN_LOADER_EXPORT __declspec(dllexport)
+    #define PLUGIN_LOADER_IMPORT __declspec(dllimport)
   #endif
-  #ifdef plugin_loader_BUILDING_DLL
-    #define plugin_loader_PUBLIC plugin_loader_EXPORT
+  #ifdef PLUGIN_LOADER_BUILDING_DLL
+    #define PLUGIN_LOADER_PUBLIC PLUGIN_LOADER_EXPORT
   #else
-    #define plugin_loader_PUBLIC plugin_loader_IMPORT
+    #define PLUGIN_LOADER_PUBLIC PLUGIN_LOADER_IMPORT
   #endif
-  #define plugin_loader_PUBLIC_TYPE plugin_loader_PUBLIC
-  #define plugin_loader_LOCAL
+  #define PLUGIN_LOADER_PUBLIC_TYPE PLUGIN_LOADER_PUBLIC
+  #define PLUGIN_LOADER_LOCAL
 #else
-  #define plugin_loader_EXPORT __attribute__ ((visibility("default")))
-  #define plugin_loader_IMPORT
+  #define PLUGIN_LOADER_EXPORT __attribute__ ((visibility("default")))
+  #define PLUGIN_LOADER_IMPORT
   #if __GNUC__ >= 4
-    #define plugin_loader_PUBLIC __attribute__ ((visibility("default")))
-    #define plugin_loader_LOCAL  __attribute__ ((visibility("hidden")))
+    #define PLUGIN_LOADER_PUBLIC __attribute__ ((visibility("default")))
+    #define PLUGIN_LOADER_LOCAL  __attribute__ ((visibility("hidden")))
   #else
-    #define plugin_loader_PUBLIC
-    #define plugin_loader_LOCAL
+    #define PLUGIN_LOADER_PUBLIC
+    #define PLUGIN_LOADER_LOCAL
   #endif
-  #define plugin_loader_PUBLIC_TYPE
+  #define PLUGIN_LOADER_PUBLIC_TYPE
 #endif
 
-#endif  // plugin_loader__VISIBILITY_CONTROL_HPP_
+#endif  // PLUGIN_LOADER_VISIBILITY_CONTROL_HPP_
