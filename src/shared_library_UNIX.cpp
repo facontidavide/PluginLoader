@@ -47,7 +47,7 @@ void SharedLibrary::unload()
 
 bool SharedLibrary::isLoaded() const
 {
-    return _handle != 0;
+    return _handle != nullptr;
 }
 
 
@@ -55,7 +55,7 @@ void* SharedLibrary::findSymbol(const std::string& name)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
-    void* result = 0;
+    void* result = nullptr;
     if (_handle)
     {
         result = dlsym(_handle, name.c_str());

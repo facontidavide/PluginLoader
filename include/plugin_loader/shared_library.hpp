@@ -153,6 +153,7 @@ private:
 
 inline SharedLibrary::SharedLibrary(const std::string& path, int flags)
 {
+    _handle = 0;
     load(path, flags);
 }
 

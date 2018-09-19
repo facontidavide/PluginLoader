@@ -27,24 +27,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <iostream>
 #include "plugin_loader/plugin_loader.hpp"
 #include "plugin_loader/multi_library_plugin_loader.hpp"
 
 #include "base.hpp"
 
-
-// Run all the tests that were declared with TEST()
 int main()
 {
-    //console_bridge::setLogLevel(console_bridge::CONSOLE_BRIDGE_LOG_DEBUG);
+    //plugin_loader::impl::getFactoryMapForBaseClass<Base>();
 
-    plugin_loader::PluginLoader loader1("./libplugin_loader_TestPlugins.so", false);
+   // plugin_loader::setLogLevel(plugin_loader::CONSOLE_LOG_DEBUG);
+    std::cout << "------------"<< std::endl;
 
-    auto names = loader1.getAvailableClasses<Base>();
+    plugin_loader::PluginLoader loader("./libPlugins.so", false);
+
+    std::cout << "------------"<< std::endl;
+
+    auto names = loader.getAvailableClasses<Base>();
+
+    std::cout << "Animals count: "<< names.size() << std::endl;
 
     for( const auto& name: names )
     {
-        loader1.createInstance<Base>(name)->saySomething();
+        std::cout << "Animal say: " << std::endl;
+        loader.createInstance<Base>(name)->saySomething();
     }
 
     return 0;

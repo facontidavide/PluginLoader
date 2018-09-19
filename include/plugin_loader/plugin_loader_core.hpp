@@ -80,7 +80,7 @@ void printDebugInfoToScreen();
  * @brief Gets a handle to a global data structure that holds a map of base class names (Base class describes plugin interface) to a FactoryMap which holds the factories for the various different concrete classes that can be instantiated. Note that the Base class is NOT THE LITERAL CLASSNAME, but rather the result of typeid(Base).name() which sometimes is the literal class name (as on Windows) but is often in mangled form (as on Linux).
  * @return A reference to the global base to factory map
  */
-PLUGIN_LOADER_PUBLIC
+
 BaseToFactoryMapMap & getGlobalPluginBaseToFactoryMapMap();
 
 /**
@@ -132,7 +132,7 @@ FactoryMap & getFactoryMapForBaseClass(const std::string & typeid_base_class_nam
  * @brief Same as above but uses a type parameter instead of string for more safety if info is available.
  * @return A reference to the FactoryMap contained within the global Base-to-FactoryMap map.
  */
-template<typename Base>
+template<typename Base> inline
 FactoryMap & getFactoryMapForBaseClass()
 {
   return getFactoryMapForBaseClass(typeid(Base).name());
@@ -356,61 +356,29 @@ void loadLibrary(const std::string & library_path, PluginLoader * loader);
 PLUGIN_LOADER_PUBLIC
 void unloadLibrary(const std::string & library_path, PluginLoader * loader);
 
-PLUGIN_LOADER_PUBLIC inline
-std::recursive_mutex & getLoadedLibraryVectorMutex()
-{
-  static std::recursive_mutex m;
-  return m;
-}
+PLUGIN_LOADER_PUBLIC
+std::recursive_mutex & getLoadedLibraryVectorMutex();
 
-PLUGIN_LOADER_PUBLIC inline
-std::recursive_mutex & getPluginBaseToFactoryMapMapMutex()
-{
-  static std::recursive_mutex m;
-  return m;
-}
+PLUGIN_LOADER_PUBLIC
+std::recursive_mutex & getPluginBaseToFactoryMapMapMutex();
 
-PLUGIN_LOADER_PUBLIC inline
-BaseToFactoryMapMap & getGlobalPluginBaseToFactoryMapMap()
-{
-  static BaseToFactoryMapMap instance;
-  return instance;
-}
+PLUGIN_LOADER_PUBLIC
+BaseToFactoryMapMap & getGlobalPluginBaseToFactoryMapMap();
 
-PLUGIN_LOADER_PUBLIC inline
-MetaObjectVector & getMetaObjectGraveyard()
-{
-  static MetaObjectVector instance;
-  return instance;
-}
+PLUGIN_LOADER_PUBLIC
+MetaObjectVector & getMetaObjectGraveyard();
 
-PLUGIN_LOADER_PUBLIC inline
-LibraryVector & getLoadedLibraryVector()
-{
-  static LibraryVector instance;
-  return instance;
-}
+PLUGIN_LOADER_PUBLIC
+LibraryVector & getLoadedLibraryVector();
 
-PLUGIN_LOADER_PUBLIC inline
-std::string & getCurrentlyLoadingLibraryNameReference()
-{
-  static std::string library_name;
-  return library_name;
-}
+PLUGIN_LOADER_PUBLIC
+std::string & getCurrentlyLoadingLibraryNameReference();
 
-PLUGIN_LOADER_PUBLIC inline
-bool & hasANonPurePluginLibraryBeenOpenedReference()
-{
-  static bool hasANonPurePluginLibraryBeenOpenedReference = false;
-  return hasANonPurePluginLibraryBeenOpenedReference;
-}
+PLUGIN_LOADER_PUBLIC
+bool & hasANonPurePluginLibraryBeenOpenedReference();
 
-PLUGIN_LOADER_PUBLIC inline
-PluginLoader * & getCurrentlyActivePluginLoaderReference()
-{
-  static PluginLoader * loader = nullptr;
-  return loader;
-}
+PLUGIN_LOADER_PUBLIC
+PluginLoader * & getCurrentlyActivePluginLoaderReference();
 
 }  // namespace impl
 }  // namespace plugin_loader

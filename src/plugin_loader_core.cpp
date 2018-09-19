@@ -36,14 +36,69 @@
 #include <cstddef>
 #include <string>
 #include <vector>
+#include <iostream>
 
 namespace plugin_loader
 {
 namespace impl
 {
 
-
 // Global data
+
+std::recursive_mutex & getLoadedLibraryVectorMutex()
+{
+  static std::recursive_mutex m;
+  return m;
+}
+
+
+std::recursive_mutex & getPluginBaseToFactoryMapMapMutex()
+{
+  static std::recursive_mutex m;
+  return m;
+}
+
+BaseToFactoryMapMap & getGlobalPluginBaseToFactoryMapMap()
+{
+  static BaseToFactoryMapMap instance;
+  static int cout = 0;
+  std::cout << "BaseToFactoryMapMap: "<<  cout++ << std::endl;
+  return instance;
+}
+
+MetaObjectVector & getMetaObjectGraveyard()
+{
+  static MetaObjectVector instance;
+  return instance;
+}
+
+LibraryVector & getLoadedLibraryVector()
+{
+  static LibraryVector instance;
+  return instance;
+}
+
+
+std::string & getCurrentlyLoadingLibraryNameReference()
+{
+  static std::string library_name;
+  return library_name;
+}
+
+
+bool & hasANonPurePluginLibraryBeenOpenedReference()
+{
+  static bool hasANonPurePluginLibraryBeenOpenedReference = false;
+  return hasANonPurePluginLibraryBeenOpenedReference;
+}
+
+
+PluginLoader * & getCurrentlyActivePluginLoaderReference()
+{
+  static PluginLoader * loader = nullptr;
+  return loader;
+}
+
 
 FactoryMap & getFactoryMapForBaseClass(const std::string & typeid_base_class_name)
 {
