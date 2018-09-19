@@ -3,9 +3,8 @@
 
 #include <iostream>
 
-#include "plugin_loader/plugin_loader.hpp"
-
 #include "base.hpp"
+#include "POCO/ClassLibrary.h"
 
 class Dog : public Base
 {

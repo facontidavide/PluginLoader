@@ -1,7 +1,7 @@
 //
 // Platform.h
 //
-// $Id: //poco/1.3/Foundation/include/Poco/Platform.h#5 $
+// $Id: //poco/1.3/Foundation/include/POCO/Platform.h#5 $
 //
 // Library: Foundation
 // Package: Core

@@ -28,31 +28,31 @@
  */
 
 #include <iostream>
-#include "plugin_loader/plugin_loader.hpp"
-#include "plugin_loader/multi_library_plugin_loader.hpp"
-
+#include "POCO/ClassLoader.h"
+#include <memory>
 #include "base.hpp"
+
+typedef Poco::ClassLoader<Base> PluginLoader;
+typedef Poco::Manifest<Base> PluginManifest;
 
 int main()
 {
-    //plugin_loader::impl::getFactoryMapForBaseClass<Base>();
+    PluginLoader loader;
+    loader.loadLibrary("./libPlugins.so");
 
-   // plugin_loader::setLogLevel(plugin_loader::CONSOLE_LOG_DEBUG);
-    std::cout << "------------"<< std::endl;
-
-    plugin_loader::PluginLoader loader("./libPlugins.so", false);
-
-    std::cout << "------------"<< std::endl;
-
-    auto names = loader.getAvailableClasses<Base>();
-
-    std::cout << "Animals count: "<< names.size() << std::endl;
-
-    for( const auto& name: names )
+    for (auto it: loader )
     {
-        std::cout << "Animal say: " << std::endl;
-        loader.createInstance<Base>(name)->saySomething();
+        std::cout << "lib path: " << it->first << std::endl;
+        auto& manifest = it->second;
+        for (auto itMan: *manifest)
+        {
+            std::cout << "class: " << itMan->name() << " says: ";
+            std::unique_ptr<Base> pPlugin( loader.create(itMan->name()) );
+            pPlugin->saySomething();
+        }
     }
+
+    loader.unloadLibrary("./libPlugins.so");
 
     return 0;
 }
