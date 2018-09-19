@@ -40,6 +40,7 @@
 #define Foundation_SharedLibrary_INCLUDED
 
 #include "plugin_loader/platform.hpp"
+#include "plugin_loader/exceptions.hpp"
 #include <string>
 #include <mutex>
 

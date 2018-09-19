@@ -14,7 +14,9 @@ void SharedLibrary::load(const std::string& path, int flags)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
-    if (_handle) throw std::runtime_error(path);
+    if (_handle){
+        throw plugin_loader::LibraryLoadException("Library already loaded: " + path);
+    }
     int realFlags = RTLD_LAZY;
     if (flags & SHLIB_LOCAL)
         realFlags |= RTLD_LOCAL;
@@ -24,7 +26,8 @@ void SharedLibrary::load(const std::string& path, int flags)
     if (!_handle)
     {
         const char* err = dlerror();
-        throw std::runtime_error(err ? std::string(err) : path);
+        throw plugin_loader::LibraryLoadException(
+                    "Could not load library: " + (err ? std::string(err) : path) );
     }
     _path = path;
 }

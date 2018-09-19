@@ -63,18 +63,6 @@ namespace plugin_loader {
 
     \}
 */
-#define logError(fmt, ...)  \
-  plugin_loader::log(__FILE__, __LINE__, plugin_loader::CONSOLE_LOG_ERROR, fmt, ##__VA_ARGS__)
-
-#define logWarn(fmt, ...)   \
-  plugin_loader::log(__FILE__, __LINE__, plugin_loader::CONSOLE_LOG_WARN,  fmt, ##__VA_ARGS__)
-
-#define logInform(fmt, ...) \
-  plugin_loader::log(__FILE__, __LINE__, plugin_loader::CONSOLE_LOG_INFO,  fmt, ##__VA_ARGS__)
-
-#define logDebug(fmt, ...)  \
-  plugin_loader::log(__FILE__, __LINE__, plugin_loader::CONSOLE_LOG_DEBUG, fmt, ##__VA_ARGS__)
-
 
 /** \brief Message namespace. This contains classes needed to
     output error messages (or logging) from within the library.
@@ -171,6 +159,28 @@ private:
     but rather used via a \ref logging "logging macro".  Formats the message
     string given the arguments and forwards the string to the output handler */
  void log(const char *file, int line, LogLevel level, const char* m, ...);
+
+
+ template<typename... Args> inline
+ void logError(const char* fmt, Args... args) {
+     plugin_loader::log(__FILE__, __LINE__, plugin_loader::CONSOLE_LOG_ERROR, fmt, args...);
+ }
+
+ template<typename... Args> inline
+ void logWarn(const char* fmt, Args... args) {
+     plugin_loader::log(__FILE__, __LINE__, plugin_loader::CONSOLE_LOG_WARN, fmt, args...);
+ }
+
+ template<typename... Args> inline
+ void logInform(const char* fmt, Args... args) {
+     plugin_loader::log(__FILE__, __LINE__, plugin_loader::CONSOLE_LOG_INFO, fmt, args...);
+ }
+
+ template<typename... Args> inline
+ void logDebug(const char* fmt, Args... args) {
+     plugin_loader::log(__FILE__, __LINE__, plugin_loader::CONSOLE_LOG_DEBUG, fmt, args...);
+ }
+
 
 }
 

@@ -396,26 +396,17 @@ void loadLibrary(const std::string & library_path, PluginLoader * loader)
   SharedLibrary * library_handle = nullptr;
 
   {
-    try {
-      setCurrentlyActivePluginLoader(loader);
-      setCurrentlyLoadingLibraryName(library_path);
-      library_handle = new SharedLibrary(library_path);
-    } catch (const std::runtime_error & e) {
-      setCurrentlyLoadingLibraryName("");
-      setCurrentlyActivePluginLoader(nullptr);
-      throw plugin_loader::LibraryLoadException(
-              "Could not load library (Poco exception = " + std::string(e.what()) + ")");
-    } catch (const std::runtime_error & e) {
-      setCurrentlyLoadingLibraryName("");
-      setCurrentlyActivePluginLoader(nullptr);
-      throw plugin_loader::LibraryLoadException(
-              "Library already loaded (Poco exception = " + std::string(e.what()) + ")");
-    } catch (const std::runtime_error & e) {
-      setCurrentlyLoadingLibraryName("");
-      setCurrentlyActivePluginLoader(nullptr);
-      throw plugin_loader::LibraryLoadException(
-              "Library not found (Poco exception = " + std::string(e.what()) + ")");
-    }
+      try {
+          setCurrentlyActivePluginLoader(loader);
+          setCurrentlyLoadingLibraryName(library_path);
+          library_handle = new SharedLibrary(library_path);
+      }
+      catch (const std::runtime_error & e)
+      {
+          setCurrentlyLoadingLibraryName("");
+          setCurrentlyActivePluginLoader(nullptr);
+          throw e;
+      }
 
     setCurrentlyLoadingLibraryName("");
     setCurrentlyActivePluginLoader(nullptr);

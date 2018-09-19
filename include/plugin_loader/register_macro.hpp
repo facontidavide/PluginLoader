@@ -27,15 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef plugin_loader__REGISTER_MACRO_HPP_
-#define plugin_loader__REGISTER_MACRO_HPP_
+#ifndef PLUGIN_LOADER_REGISTER_MACRO_HPP_
+#define PLUGIN_LOADER_REGISTER_MACRO_HPP_
 
 #include <string>
 
 #include "plugin_loader/plugin_loader_core.hpp"
 #include "plugin_loader/console.h"
 
-#define plugin_loader_REGISTER_CLASS_INTERNAL_WITH_MESSAGE(Derived, Base, UniqueID, Message) \
+#define PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_WITH_MESSAGE(Derived, Base, UniqueID, Message) \
   namespace \
   { \
   struct ProxyExec ## UniqueID \
@@ -45,28 +45,28 @@
     ProxyExec ## UniqueID() \
     { \
       if (!std::string(Message).empty()) { \
-        logInform("%s", Message);} \
+        plugin_loader::logInform("%s", Message);} \
       plugin_loader::impl::registerPlugin<_derived, _base>(#Derived, #Base); \
     } \
   }; \
   static ProxyExec ## UniqueID g_register_plugin_ ## UniqueID; \
   }  // namespace
 
-#define plugin_loader_REGISTER_CLASS_INTERNAL_HOP1_WITH_MESSAGE(Derived, Base, UniqueID, Message) \
-  plugin_loader_REGISTER_CLASS_INTERNAL_WITH_MESSAGE(Derived, Base, UniqueID, Message)
+#define PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_HOP1_WITH_MESSAGE(Derived, Base, UniqueID, Message) \
+  PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_WITH_MESSAGE(Derived, Base, UniqueID, Message)
 
 /**
-* @macro This macro is same as plugin_loader_REGISTER_CLASS, but will spit out a message when the plugin is registered
+* @macro This macro is same as PLUGIN_LOADER_REGISTER_CLASS, but will spit out a message when the plugin is registered
 * at library load time
 */
-#define plugin_loader_REGISTER_CLASS_WITH_MESSAGE(Derived, Base, Message) \
-  plugin_loader_REGISTER_CLASS_INTERNAL_HOP1_WITH_MESSAGE(Derived, Base, __COUNTER__, Message)
+#define PLUGIN_LOADER_REGISTER_CLASS_WITH_MESSAGE(Derived, Base, Message) \
+  PLUGIN_LOADER_REGISTER_CLASS_INTERNAL_HOP1_WITH_MESSAGE(Derived, Base, __COUNTER__, Message)
 
 /**
 * @macro This is the macro which must be declared within the source (.cpp) file for each class that is to be exported as plugin.
 * The macro utilizes a trick where a new struct is generated along with a declaration of static global variable of same type after it. The struct's constructor invokes a registration function with the plugin system. When the plugin system loads a library with registered classes in it, the initialization of static variables forces the invocation of the struct constructors, and all exported classes are automatically registerd.
 */
-#define plugin_loader_REGISTER_CLASS(Derived, Base) \
-  plugin_loader_REGISTER_CLASS_WITH_MESSAGE(Derived, Base, "")
+#define PLUGIN_LOADER_REGISTER_CLASS(Derived, Base) \
+  PLUGIN_LOADER_REGISTER_CLASS_WITH_MESSAGE(Derived, Base, "")
 
 #endif  // plugin_loader__REGISTER_MACRO_HPP_

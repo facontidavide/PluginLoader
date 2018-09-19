@@ -47,4 +47,4 @@ add_library(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS} ${${PROJECT_NAME}_HDRS})
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${console_bridge_LIBRARIES} dl)
 target_compile_definitions(${PROJECT_NAME} PRIVATE "plugin_loader_BUILDING_DLL")
 
-add_subdirectory(test)
+add_subdirectory(example)
