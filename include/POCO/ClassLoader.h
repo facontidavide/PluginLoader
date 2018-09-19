@@ -176,9 +176,9 @@ public:
 					if (buildManifest(const_cast<Manif*>(li.pManifest)))
 						_map[path] = li;
 					else
-						throw LibraryLoadException(std::string("Manifest class mismatch in ") + path, manifest);
+                        throw LibraryLoadException(std::string("Manifest class mismatch in ") + path);
 				}
-				else throw LibraryLoadException(std::string("No manifest in ") + path, manifest);
+                else throw LibraryLoadException(std::string("No manifest in ") + path);
 			}
 			catch (...)
 			{
@@ -269,29 +269,12 @@ public:
 			throw NotFoundException(className);
 	}
 	
-	Base* create(const std::string& className) const
+    std::unique_ptr<Base> create(const std::string& className) const
 		/// Creates an instance of the given class.
 		/// Throws a NotFoundException if the class
 		/// is not known.
 	{
 		return classFor(className).create();
-	}
-	
-	Base& instance(const std::string& className) const
-		/// Returns a reference to the sole instance of
-		/// the given class. The class must be a singleton,
-		/// otherwise an InvalidAccessException will be thrown.
-		/// Throws a NotFoundException if the class
-		/// is not known.
-	{
-		return classFor(className).instance();
-	}
-	
-	bool canCreate(const std::string& className) const
-		/// Returns true if create() can create new instances
-		/// of the class.
-	{
-		return classFor(className).canCreate();
 	}
 
 	void destroy(const std::string& className, Base* pObject) const

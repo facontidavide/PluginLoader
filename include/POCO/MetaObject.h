@@ -20,7 +20,7 @@
 #include <assert.h>
 #include "POCO/Foundation.h"
 #include "POCO/Exception.h"
-#include <set>
+#include <memory>
 
 
 namespace Poco {
@@ -44,10 +44,6 @@ public:
 
 	virtual ~AbstractMetaObject()
 	{
-		for (typename ObjectSet::iterator it = _deleteSet.begin(); it != _deleteSet.end(); ++it)
-		{
-			delete *it;
-		}
 	}
 
 	const char* name() const
@@ -55,74 +51,22 @@ public:
 		return _name;
 	}
 
-	virtual B* create() const = 0;
+    virtual std::unique_ptr<B> create() const = 0;
 		/// Create a new instance of a class.
-		/// Cannot be used for singletons.
-		
-	virtual B& instance() const = 0;
-		/// Returns a reference to the only instance
-		/// of the class. Used for singletons only.
 
-	virtual bool canCreate() const = 0;
-		/// Returns true iff the create method can be used
-		/// to create instances of the class.
-		/// Returns false if the class is a singleton.
-
-	virtual void destroy(B* pObject) const
-		/// If pObject was owned by meta object, the
-		/// ownership of the deleted object is removed
-		/// and the object is deleted.
-	{
-		typename ObjectSet::iterator it = _deleteSet.find(pObject);
-		
-		if (it != _deleteSet.end())
-		{
-			_deleteSet.erase(pObject);
-			delete pObject;
-		}
-	}
-
-	B* autoDelete(B* pObject) const
-		/// Give ownership of pObject to the meta object.
-		/// The meta object will delete all objects it owns
-		/// when it is destroyed.
-		///
-		/// Returns pObject.
-	{
-		if (this->canCreate()) // guard against singleton
-		{
-			poco_check_ptr (pObject);
-			_deleteSet.insert(pObject);
-		}
-		else throw InvalidAccessException("Cannot take ownership of", this->name());
-
-		return pObject;
-	}
-
-	virtual bool isAutoDelete(B* pObject) const
-		/// Returns true if the object is owned
-		/// by meta object.
-		///
-		/// Overloaded in MetaSingleton - returns true
-		/// if the class is a singleton.
-	{
-		return _deleteSet.find(pObject) != _deleteSet.end();
-	}
 
 private:
 	AbstractMetaObject();
 	AbstractMetaObject(const AbstractMetaObject&);
 	AbstractMetaObject& operator = (const AbstractMetaObject&);
 
-	typedef std::set<B*> ObjectSet;
-	
 	const char* _name;
-	mutable ObjectSet _deleteSet;
+
 };
 
 
-template <class C, class B>
-class MetaObject: public AbstractMetaObject<B>
+template <class Class, class Base>
+class MetaObject: public AbstractMetaObject<Base>
 	/// A MetaObject stores some information
 	/// about a C++ class. The MetaObject class
 	/// is used by the Manifest class.
@@ -130,30 +74,17 @@ class MetaObject: public AbstractMetaObject<B>
 	/// factory for its class.
 {
 public:
-	MetaObject(const char* name): AbstractMetaObject<B>(name)
+    MetaObject(const char* name): AbstractMetaObject<Base>(name)
 	{
 	}
 
-	~MetaObject()
-	{
-	}
+    ~MetaObject() = default;
 
-	B* create() const
+    std::unique_ptr<Base> create() const override
 	{
-		return new C;
-	}
-	
-	B& instance() const
-	{
-		throw InvalidAccessException("Not a singleton. Use create() to create instances of", this->name());
-	}
-	
-	bool canCreate() const
-	{
-		return true;
+        return std::unique_ptr<Base>(new Class);
 	}
 };
-
 
 
 } // namespace Poco

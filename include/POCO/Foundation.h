@@ -91,22 +91,6 @@
 #endif
 
 
-//
-// Include platform-specific definitions
-//
-#include "POCO/Platform.h"
-#if defined(_WIN32)
-    #include "POCO/Platform_WIN32.h"
-#elif defined(POCO_VXWORKS)
-    #include "POCO/Platform_VX.h"
-#elif defined(POCO_OS_FAMILY_UNIX)
-    #include "POCO/Platform_POSIX.h"
-#endif
-
-
-//
-// Pull in basic definitions
-//
 #include <string>
 
 

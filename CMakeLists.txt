@@ -7,7 +7,7 @@ include_directories(include )
 
 set(plugin_loader_SRCS
     src/Poco/Manifest.cpp
-    src/Poco/Exception.cpp
+#    src/Poco/Exception.cpp
     src/Poco/SharedLibrary.cpp
     )
 

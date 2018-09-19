@@ -44,7 +44,7 @@ void SharedLibraryImpl::loadImpl(const std::string& path, int flags)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
-	if (_handle) throw LibraryAlreadyLoadedException(path);
+    if (_handle) throw LibraryLoadException(path);
 	int realFlags = RTLD_LAZY;
 	if (flags & SHLIB_LOCAL_IMPL)
 		realFlags |= RTLD_LOCAL;
@@ -54,7 +54,7 @@ void SharedLibraryImpl::loadImpl(const std::string& path, int flags)
 	if (!_handle)
 	{
 		const char* err = dlerror();
-		throw LibraryLoadException(err ? std::string(err) : path);
+        throw LibraryLoadException(err ? std::string(err) : path);
 	}
 	_path = path;
 }
